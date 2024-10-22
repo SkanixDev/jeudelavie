@@ -8,6 +8,7 @@ int init_grid(grid *g, int width, int height);
 int free_grid(grid *g);
 int print_grid(grid *g);
 
-// int draw_grid(grid *g, SDL_Renderer *renderer);
+int draw_grid(grid *g, SDL_Renderer *renderer, int x, int y, int cell_size);
+int update_grid(grid *g);
 
 #endif

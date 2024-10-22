@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "grid/grid.h"
 
@@ -12,10 +13,12 @@
 #define WINDOW_HEIGHT 600
 
 // parametres de la grille
-#define GRID_WIDTH 20
-#define GRID_HEIGHT 20
+#define GRID_WIDTH 100
+#define GRID_HEIGHT 100
 
-#define CELL_SIZE 20
+#define CELL_SIZE 5
+
+#define TIME_PER_GEN 100
 
 int main(int argc, char *argv[])
 {
@@ -44,7 +47,6 @@ int main(int argc, char *argv[])
 
     grid g;
     init_grid(&g, GRID_WIDTH, GRID_HEIGHT);
-
     while (isRunning)
     {
         while (SDL_PollEvent(&e))
@@ -58,8 +60,9 @@ int main(int argc, char *argv[])
         SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
         SDL_RenderClear(pRenderer);
 
-        draw_grid(&g, pRenderer);
-
+        draw_grid(&g, pRenderer, 0, 0, CELL_SIZE);
+        update_grid(&g);
+        SDL_Delay(TIME_PER_GEN);
         SDL_RenderPresent(pRenderer); // On mets a jour notre fenêtre
     }
 

@@ -3,6 +3,7 @@ struct cell
     int x;
     int y;
     int state;
+    int neighbors;
 };
 typedef struct cell cell;
 

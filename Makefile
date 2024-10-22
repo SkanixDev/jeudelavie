@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -std=c17 -Wall
-INCLUDES = -I./include -I./include/grid/
+INCLUDES = -I./include -I./include/grid/ -I./include/grid/button/
 LIBS = -L./lib -lmingw32 -lSDL2main -lSDL2
-SRC = $(wildcard ./src/*.c) $(wildcard ./src/grid/*.c)
+SRC = $(wildcard ./src/*.c) $(wildcard ./src/grid/*.c) $(wildcard ./src/button/*.c)
 TARGET = main
 
 $(TARGET): $(SRC)
