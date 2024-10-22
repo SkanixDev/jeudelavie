@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "grid/grid.h"
+#include "button/button.h"
 
 #define EXIT_FAILURE 1
 #define EXIT_SUCCESS 0
@@ -14,6 +15,12 @@
 #define WINDOW_HEIGHT 600
 
 // parametres de la grille
+enum game_state
+{
+    PAUSE,
+    PLAY
+};
+
 #define GRID_WIDTH 150
 #define GRID_HEIGHT 120
 
@@ -49,7 +56,7 @@ int main(int argc, char *argv[])
     SDL_SetWindowTitle(pWindow, "Game of Life");
     SDL_SetRenderDrawBlendMode(pRenderer, SDL_BLENDMODE_ADD);
     // -> manage font
-    TTF_Font *pixel_font = TTF_OpenFont("bin/reppixel.ttf", 25);
+    TTF_Font *pixel_font = TTF_OpenFont("bin/reppixel.ttf", 15);
     if (!pixel_font)
     {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load font: %s", TTF_GetError());
@@ -57,7 +64,7 @@ int main(int argc, char *argv[])
     }
 
     SDL_Color pixel_color = {255, 255, 255};
-    SDL_Surface *pixel_surface = TTF_RenderText_Solid(pixel_font, "HELLO WORLD !", pixel_color);
+    SDL_Surface *pixel_surface = TTF_RenderText_Solid(pixel_font, "GAME OF LIFE", pixel_color);
     if (!pixel_surface)
     {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to create surface: %s", TTF_GetError());
@@ -75,6 +82,7 @@ int main(int argc, char *argv[])
     }
     // Gameloop
     bool isRunning = true;
+    enum game_state game_state = PAUSE;
     SDL_Event e;
 
     grid g;
@@ -92,20 +100,28 @@ int main(int argc, char *argv[])
         SDL_SetRenderDrawColor(pRenderer, 0, 0, 0, 255);
         SDL_RenderClear(pRenderer);
 
-        // draw_grid(&g, pRenderer, 0, 0, CELL_SIZE);
-        // update_grid(&g);
+        draw_grid(&g, pRenderer, WINDOW_WIDTH - (GRID_WIDTH * CELL_SIZE), 0, CELL_SIZE);
 
-        // Définir la position et la taille de la texture
-        SDL_Rect dstrect = {100, 100, pixel_surface->w, pixel_surface->h};
+        if (game_state == PLAY)
+        {
+            update_grid(&g);
+        }
+        else
+        {
+            // draw button
+            button btn = {10, 10, 100, 50, "PLAY", 0, 1};
+            draw_button(pRenderer, &btn);
+        }
 
-        // Copier la texture sur le renderer
+        // show text
+        SDL_Rect dstrect = {10, 10, pixel_surface->w, pixel_surface->h};
         SDL_RenderCopy(pRenderer, pixel_texture, NULL, &dstrect);
 
-        SDL_RenderPresent(pRenderer); // On mets a jour notre fenêtre
+        SDL_RenderPresent(pRenderer); // update
         SDL_Delay(TIME_PER_GEN);
     }
 
-    // Fin
+    // end
     free_grid(&g);
     SDL_FreeSurface(pixel_surface);    // close pixel font
     SDL_DestroyTexture(pixel_texture); // close pixel font

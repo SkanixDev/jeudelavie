@@ -4,7 +4,7 @@
 #include "grid_types.h"
 #include <SDL2/SDL.h>
 
-int init_grid(grid *g, int height, int width)
+void init_grid(grid *g, int height, int width)
 {
     srand(time(NULL));
     g->width = width;
@@ -19,20 +19,18 @@ int init_grid(grid *g, int height, int width)
             g->cells[i][j] = c;
         }
     }
-    return 0;
 }
 
-int free_grid(grid *g)
+void free_grid(grid *g)
 {
     for (int i = 0; i < g->height; i++)
     {
         free(g->cells[i]);
     }
     free(g->cells);
-    return 0;
 }
 
-int print_grid(grid *g)
+void print_grid(grid *g)
 {
     for (int i = 0; i < g->height; i++)
     {
@@ -42,10 +40,9 @@ int print_grid(grid *g)
         }
         printf("\n");
     }
-    return 0;
 }
 
-int draw_grid(grid *g, SDL_Renderer *renderer, int x, int y, int cell_size)
+void draw_grid(grid *g, SDL_Renderer *renderer, int x, int y, int cell_size)
 {
     for (int i = 0; i < g->height; i++)
     {
@@ -63,10 +60,9 @@ int draw_grid(grid *g, SDL_Renderer *renderer, int x, int y, int cell_size)
             SDL_RenderFillRect(renderer, &r);
         }
     }
-    return 0;
 }
 
-int count_neighbors(grid *g)
+void count_neighbors(grid *g)
 {
     for (int i = 0; i < g->height; i++)
     {
@@ -93,10 +89,9 @@ int count_neighbors(grid *g)
             g->cells[i][j].neighbors = count_cell;
         }
     }
-    return 0;
 }
 
-int update_grid(grid *g)
+void update_grid(grid *g)
 {
     count_neighbors(g);
     for (int i = 0; i < g->height; i++)
@@ -113,5 +108,4 @@ int update_grid(grid *g)
             }
         }
     }
-    return 0;
 }
