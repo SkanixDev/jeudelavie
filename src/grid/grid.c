@@ -4,16 +4,16 @@
 #include "grid_types.h"
 #include <SDL2/SDL.h>
 
-int init_grid(grid *g, int width, int height)
+int init_grid(grid *g, int height, int width)
 {
     srand(time(NULL));
     g->width = width;
     g->height = height;
-    g->cells = (cell **)malloc(sizeof(cell *) * width);
-    for (int i = 0; i < width; i++)
+    g->cells = (cell **)malloc(sizeof(cell *) * height);
+    for (int i = 0; i < height; i++)
     {
-        g->cells[i] = (cell *)malloc(sizeof(cell) * height);
-        for (int j = 0; j < height; j++)
+        g->cells[i] = (cell *)malloc(sizeof(cell) * width);
+        for (int j = 0; j < width; j++)
         {
             cell c = {i, j, rand() % 2, 0};
             g->cells[i][j] = c;
@@ -24,7 +24,7 @@ int init_grid(grid *g, int width, int height)
 
 int free_grid(grid *g)
 {
-    for (int i = 0; i < g->width; i++)
+    for (int i = 0; i < g->height; i++)
     {
         free(g->cells[i]);
     }
@@ -34,9 +34,9 @@ int free_grid(grid *g)
 
 int print_grid(grid *g)
 {
-    for (int i = 0; i < g->width; i++)
+    for (int i = 0; i < g->height; i++)
     {
-        for (int j = 0; j < g->height; j++)
+        for (int j = 0; j < g->width; j++)
         {
             printf("%d", g->cells[i][j].state);
         }
@@ -47,9 +47,9 @@ int print_grid(grid *g)
 
 int draw_grid(grid *g, SDL_Renderer *renderer, int x, int y, int cell_size)
 {
-    for (int i = 0; i < g->width; i++)
+    for (int i = 0; i < g->height; i++)
     {
-        for (int j = 0; j < g->height; j++)
+        for (int j = 0; j < g->width; j++)
         {
             if (g->cells[i][j].state == 1)
             {
